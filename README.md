@@ -1,42 +1,123 @@
-# lep-chat-demo
+# Lep-Chat Demo
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+![React](https://img.shields.io/badge/React-19-blue?logo=react)
+![Next.js](https://img.shields.io/badge/Next.js-15-black?logo=next.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
+![License](https://img.shields.io/badge/License-MIT-green)
 
-## Getting Started
+> **Live Demonstration of the [Lep-Chat](https://www.npmjs.com/package/lep-chat) Component Library**
 
-First, run the development server:
+This project serves as a production-ready reference implementation for **Lep-Chat**, a high-performance React component library designed for seamless LLM integration. 
 
+In this demo, we showcase a **"Fitness AI"** application, demonstrating how easily `lep-chat` can be customized and connected to a powerful backend (Google Gemini via Next.js API routes).
+
+---
+
+## 🚀 About Lep-Chat (The Core Library)
+
+**Lep-Chat** is a modular React component library engineered to provide a seamless chat interface for AI-driven applications. Built with **React 19** and **TypeScript**, it abstracts the complexities of state management, message rendering, and UI responsiveness.
+
+### Key Features & Engineering Highlights
+*   **Library-First Architecture:** Bundled with **Rollup** for optimized ESM/CommonJS output.
+*   **Modern Engine:** Built on **React 19**, leveraging the latest functional patterns.
+*   **Zero-Leakage Styling:** Hybrid approach using **Tailwind CSS** and **CSS Modules**.
+*   **Rich Content:** Professional-grade Markdown rendering (Code blocks, Tables) via `react-markdown` & `remark-gfm`.
+*   **Backend Agnostic:** purely presentation/interaction layer; connects to *any* API (OpenAI, Gemini, Anthropic, etc.) via a simple Promise-based contract.
+
+---
+
+## 🛠️ Demo Implementation Details
+
+This repository demonstrates a full-stack integration using **Next.js 15**.
+
+### 1. The Frontend (`src/pages/index.tsx`)
+The `Chat` component is imported and configured with custom branding. Notice how the `onGetResponse` prop handles the communication logic, keeping the UI component pure.
+
+```tsx
+import Chat from 'lep-chat';
+import 'lep-chat/dist/style.css';
+
+// ... (fetch logic)
+
+export default function Home() {
+  return (
+    <main style={{ display: 'flex', justifyContent: 'center', height: '100vh' }}>
+      <Chat 
+        onGetResponse={getResponse} // <--- Connects to your backend
+        placeHolder="Ask me anything..."
+        overline="Ready to Sweat? 🔥"
+        title="Personal"
+        highlightedText="Fitness AI"
+        gradient={['#F09819', '#EDDE5D']}
+        subtitle="Tell me your fitness goal, and I'll generate a personalized workout plan."
+      />
+    </main>
+  );
+}
+```
+
+### 2. The Backend (`src/pages/api/response.ts`)
+The demo uses a Next.js API route to securely communicate with Google's GenAI SDK, keeping API keys hidden from the client.
+
+```typescript
+// Simplified snippet
+import { GoogleGenAI } from '@google/genai';
+
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// ... chat configuration
+
+export default async function handler(req, res) {
+  const { question } = req.body;
+  const result = await chat.sendMessage({ message: question });
+  return res.status(200).json({ response: result.text });
+}
+```
+
+---
+
+## 💻 Getting Started
+
+To run this demo locally and explore the code:
+
+### 1. Clone & Install
+```bash
+git clone https://github.com/yourusername/lep-chat-demo.git
+cd lep-chat-demo
+npm install
+```
+
+### 2. Configure Environment
+Create a `.env.local` file in the root directory and add your Google Gemini credentials:
+
+```env
+API_KEY=your_google_gemini_api_key
+CHAT_ROLE="You are a helpful fitness assistant."
+CHAT_MODEL="gemini-1.5-flash"
+```
+
+### 3. Run Development Server
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+---
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## 🏗️ Technical Stack
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+| Category | Technology | Usage |
+| bound | :--- | :--- |
+| **Frontend Framework** | Next.js 15 (Pages Router) | App scaffolding & routing |
+| **UI Library** | **Lep-Chat** | Core chat interface & logic |
+| **Core** | React 19 | UI Component Architecture |
+| **Language** | TypeScript | Type safety & developer experience |
+| **AI SDK** | Google GenAI SDK | LLM Interaction |
+| **Styling** | CSS Modules / Tailwind | Component styling |
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🤝 Contributing & Licensing
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+This demo project is open source. 
+For the core library documentation, visit the [Lep-Chat NPM package](https://www.npmjs.com/package/lep-chat).
